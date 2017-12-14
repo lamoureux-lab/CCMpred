@@ -20,6 +20,14 @@ void apc(conjugrad_float_t *mat, int ncol);
  */
 void normalize(conjugrad_float_t *mat, int ncol);
 
+/** Store the self-couplings in the diagonal of the matrix
+ * The self-couplings correspond to the norm of the field at each position in the sequence:
+ * S_i = sqrt( sum_a epsilon_i(a)**2 )
+ *
+ * @param[in,out] mat The matrix to process
+ * @param[in] ncol The number of columns in the matrix
+ */
+void set_diagonal(conjugrad_float_t *mat, int ncol);
 
 /**
  * Exit the program with an error message.

@@ -138,3 +138,15 @@ void normalize(conjugrad_float_t *mat, int ncol) {
 	}
 
 }
+
+void set_diagonal(conjugrad_fload_t *mat, int ncol) {
+  for(int i = 0; i < ncol; i++) {
+    conjugrad_float_t xnorm = 0;
+    for(int a = 0; a < N_ALPHA; a++) {
+      conjugrad_float_t v = V(i,a);
+      xnorm += v * v;
+    }
+    // The diagonal values are set to S_i = sqrt( sum_a epsilon_i(a)**2 )
+    mat[i* ncol + i] = sqrt(xnorm);
+  }
+}

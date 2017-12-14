@@ -207,6 +207,7 @@ void usage(char* exename, int long_usage) {
 		printf("\t-l LFACTOR\tSet pairwise regularization coefficients to LFACTOR * (L-1) [default: 0.2]\n");
 		printf("\t-A        \tDisable average product correction (APC)\n");
 		printf("\t-R        \tRe-normalize output matrix to [0,1]\n");
+		printf("\t-D        \tStore the self-couplings in the diagonal of the output matrix\n");
 		printf("\t-h        \tDisplay help\n");
 
 		printf("\n");
@@ -222,6 +223,7 @@ int main(int argc, char **argv)
 	int numiter = 250;
 	int use_apc = 1;
 	int use_normalization = 0;
+	int use_diagonal = 0;
 	conjugrad_float_t lambda_single = F001; // 0.01
 	conjugrad_float_t lambda_pair = FInf;
 	conjugrad_float_t lambda_pair_factor = F02; // 0.2
@@ -233,7 +235,7 @@ int main(int argc, char **argv)
 	char *optstr;
 	char *old_optstr = malloc(1);
 	old_optstr[0] = 0;
-	optstr = concat("r:i:n:w:k:e:l:ARh?", old_optstr);
+	optstr = concat("r:i:n:w:k:e:l:ARDh?", old_optstr);
 	free(old_optstr);
 
 #ifdef OPENMP
@@ -316,6 +318,9 @@ int main(int argc, char **argv)
 				break;
 			case 'R':
 				use_normalization = 1;
+				break;
+			case 'D':
+				use_diagonal = 1;
 				break;
 			case 'h':
 			case '?':
@@ -710,6 +715,10 @@ int main(int argc, char **argv)
 
 	if(use_normalization) {
 		normalize(outmat, ncol);
+	}
+
+	if(use_diagonal) {
+		set_diagonal(outmat, ncol);
 	}
 
 	write_matrix(out, outmat, ncol, ncol);
